@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lex_rank import LexRankSummarizer
 from sumy.summarizers.lsa import LsaSummarizer
-from sumy.summarizers.luhn import LuhnSummarizer 
+from sumy.summarizers.luhn import LuhnSummarizer
 from sumy.summarizers.text_rank import TextRankSummarizer
 from sumy.summarizers.kl import KLSummarizer
 from sumy.evaluation import cosine_similarity
@@ -13,33 +14,35 @@ file = "doc1.txt"
 parser = PlaintextParser.from_file(file, Tokenizer("english"))
 print(parser.document)
 
-print("\nLexRank:")
+
 summarizer = LexRankSummarizer()
 summary = summarizer(parser.document, 10)
+lexsum = ""
 for sen in summary:
-	print(sen)
+	lexsum +=str(sen)
 
-print("\nTextRank:")
+
 summarizer = TextRankSummarizer()
 summary = summarizer(parser.document, 10)
+textsum =""
 for sen in summary:
-	print(sen)
+	textsum +=str(sen)
 
-print("\nLSA:")
+
 summarizer = LsaSummarizer()
 summary = summarizer(parser.document, 10)
 lsasum = ""
 for sen in summary:
-	print(sen)
 	lsasum += str(sen)
 
-print("\nLuhn:")
+
 summarizer = LuhnSummarizer()
 summary = summarizer(parser.document, 10)
+luhnsum =""
 for sen in summary:
-	print(sen)
+	luhnsum +=str(sen)
 
-print("\nKL:")
+
 summarizer = KLSummarizer()
 summary = summarizer(parser.document, 10)
 klsum = ""
@@ -53,9 +56,22 @@ The tendency of knee-jerk reactions on online platforms is staggering. People do
 People have surprisingly limited attention spans these days. Therefore everything has a shelf life, even news items
 These days, if you do decide to take up the debate through a logical discourse by educating yourself first, a process which would naturally take some time, you are considered to be out of step with the trend, for you have missed the ‘window of opportunity’ pertaining to the issue. Its almost as if taking time to put forward a measured, weighted and logical stance is an undesired quality.
 Social media is integral in formulating public opinion and is an active stakeholder in reflecting societal expectations and perceptions.
-Conflicting viewpoints aren’t dangerous. Unsubstantiated viewpoints are dangerous.
-"""
-lsasummodel = TfDocumentModel(lsasum, Tokenizer("english"))
-summodel = TfDocumentModel(sum_text, Tokenizer("english"))
+Conflicting viewpoints aren’t dangerous. Unsubstantiated viewpoints are dangerous."""
 
+lexsummodel = TfDocumentModel(lexsum,Tokenizer("english")) 
+textsummodel = TfDocumentModel(textsum,Tokenizer("english")) 
+luhnsummodel = TfDocumentModel(luhnsum,Tokenizer("english")) 
+lsasummodel = TfDocumentModel(lsasum,Tokenizer("english")) 
+klsummodel = TfDocumentModel(klsum,Tokenizer("english"))
+
+summodel = TfDocumentModel(sum_text, Tokenizer("english"))
+print("\nLEX")
+print(cosine_similarity(lexsummodel, summodel))
+print("\nTEXT")
+print(cosine_similarity(textsummodel, summodel))
+print("\nLSA")
 print(cosine_similarity(lsasummodel, summodel))
+print("\nLUHN")
+print(cosine_similarity(luhnsummodel, summodel))
+print("\nKL")
+print(cosine_similarity(klsummodel, summodel))
