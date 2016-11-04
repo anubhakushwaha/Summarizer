@@ -36,11 +36,13 @@ for sen in summary:
 	lsasum += str(sen)
 
 
+
 summarizer = LuhnSummarizer()
 summary = summarizer(parser.document, 10)
 luhnsum =""
 for sen in summary:
 	luhnsum +=str(sen)
+	print (sen)
 
 
 summarizer = KLSummarizer()
